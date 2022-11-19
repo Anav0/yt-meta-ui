@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+}
+.bx--expandable-row td {
+  background: var(--cds-ui-01) !important;
+}
+html {
+  width: 100vw;
+  height: 100vh;
+  font-size: 12px;
+}
+body {
+  height: calc(100% - 3rem);
+}
+main {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 10px 1fr 10px;
+  grid-template-rows: 1fr;
+  overflow: auto;
+}
+.page {
+  grid-column: 2/3;
+  overflow: auto;
+}
+
+@media only screen and (min-width: 768px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  html {
+    font-size: 14px;
+  }
+  main {
+    grid-template-columns: 7rem 1fr 7rem;
+  }
+}
+@media only screen and (min-width: 1920px) {
+  html {
+    font-size: 16px;
+  }
+  main {
+    grid-template-columns: minmax(0, 400px) 1fr minmax(0, 400px);
+  }
+}
