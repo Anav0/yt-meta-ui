@@ -1,5 +1,8 @@
-/node_modules/
-/public/build/
-.vscode
+.vscode/
 .DS_Store
 .env
+node_modules/
+.vs/
+bin/
+obj/
+build/
