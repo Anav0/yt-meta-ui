@@ -7,12 +7,16 @@ const instance = axios.create({
 
 export const api = {
   videos: {
+    getByPage: async (page: number, howMany: number, order: string, column: string, phrase: string = "") => {
+      let route = `/Video/${page}/${howMany}/`
 
-    getByPage: async (page: number, howMany: number, phrase: string = "") => {
-      if (phrase.trim() == "")
-        return await instance.get(`/Video/${page}/${howMany}`);
-      else
-        return await instance.get(`/Video/${page}/${howMany}/${phrase}`);
+      if (order && column)
+        route += `${order}/${column}/`;
+
+      if (phrase.trim() != "")
+        route += `${phrase}`
+
+      return await instance.get(route);
     }, total: async () => {
       return await instance.get(`/Video/total`);
     },

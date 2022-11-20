@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     Toolbar,
+    Link,
     ToolbarContent,
     ToolbarSearch,
     Pagination,
@@ -10,11 +11,11 @@
     DataTableSkeleton,
   } from "carbon-components-svelte";
   import { api } from "../../api";
-  import { page, howMany } from "../../stores/settings";
+  import { order, column, page, howMany } from "../../stores/settings";
   import { errMsg, errTitle } from "../../stores/error";
   import type { Video } from "../../models/video";
   import { onMount } from "svelte";
-
+  import PlayOutline from "carbon-icons-svelte/lib/PlayOutline.svelte";
   let rows: Video[] = [];
 
   let fetching = false;
@@ -22,16 +23,26 @@
   let pages = 0;
   let phrase = "";
   let prevPhrase = "";
+  let sortKey = "";
+  let sortDirection: "descending" | "none" | "ascending" = "none";
 
   $: {
-    fetchVideos($page, $howMany, phrase);
+    if (!sortKey) {
+      $order = null;
+      $column = "";
+    } else {
+      $order = sortDirection.slice(0, 4);
+      $column = sortKey.charAt(0).toUpperCase() + sortKey.slice(1);
+    }
+
+    fetchVideos($page, $howMany, $order, $column, phrase);
   }
 
-  const fetchVideos = async (pageArg, howManyArg, phraseArg) => {
+  const fetchVideos = async (pageArg, howManyArg, orderArg, columnArg, phraseArg) => {
     if (fetching) return;
     fetching = true;
     try {
-      const { data: result } = await api.videos.getByPage($page, $howMany, phrase);
+      const { data: result } = await api.videos.getByPage($page, $howMany, $order, $column, phrase);
       rows = [...result];
 
       if (phrase != prevPhrase) {
@@ -64,6 +75,10 @@
       value: "Id",
     },
     {
+      key: "channel",
+      value: "Kanał",
+    },
+    {
       key: "title",
       value: "Tytuł",
     },
@@ -75,7 +90,7 @@
   ];
 
   onMount(async () => {
-    await fetchVideos($page, $howMany, phrase);
+    await fetchVideos($page, $howMany, $order, $column, phrase);
   });
 
   let timer;
@@ -89,7 +104,22 @@
 
 <div class="videos-list page">
   {#if !fetching}
-    <DataTable size="compact" title="Lista filmików" description="" zebra sortable {headers} bind:rows>
+    <DataTable
+      bind:sortKey
+      bind:sortDirection
+      size="compact"
+      title="Lista filmików"
+      description=""
+      zebra
+      sortable
+      {headers}
+      bind:rows
+    >
+      <svelte:fragment slot="cell" let:cell>
+        {#if cell.key === "webpageUrl"}
+          <Link target="_blank" icon={PlayOutline} href={cell.value} />
+        {:else}{cell.value}{/if}
+      </svelte:fragment>
       <Toolbar>
         <ToolbarContent>
           <ToolbarSearch

@@ -14,4 +14,5 @@ export class Video {
     playlistTitle: string
     playlistIndex: string
     isLive: boolean
+    webpageUrl: string
 }
