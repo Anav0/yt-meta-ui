@@ -1,0 +1,2 @@
+Start-Process -FilePath "dotnet" -ArgumentList "dotnet run --urls https://localhost:44390 --project D:\Projects\yt-meta-ui\Server\YT-dashboard.API\"
+Start-Process "C:\Users\Igor\AppData\Local\Programs\Python\Python310\python.exe" -ArgumentList  "-m http.server 3000 --directory UI/public"
