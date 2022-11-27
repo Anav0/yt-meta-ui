@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace YT_dashboard.API;
+namespace YT.Data;
 
 public partial class PostgresContext : DbContext
 {

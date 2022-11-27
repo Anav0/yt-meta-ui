@@ -1,45 +1,37 @@
-using YT_dashboard.API.Controllers;
-namespace YT_dashboard.API
+using YT.Data;
+
+namespace YT.HTTP;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddDbContext<PostgresContext>();
+
+        var app = builder.Build();
+
+        app.UseCors(builder =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            builder
+                .WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .Build();
+        });
 
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
+        app.UseHttpsRedirection();
 
-            builder.Services.AddDbContext<PostgresContext>();
+        app.UseAuthorization();
 
-            builder.Services.AddSwaggerGen();
+        app.MapControllers();
 
-            var app = builder.Build();
+        app.MapVideoEndpoints();
 
-            app.UseCors(builder =>
-            {
-                builder
-                    .WithOrigins("http://localhost:3000")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .Build();
-            });
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            };
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.MapVideoEndpoints();
-
-            app.Run();
-        }
+        app.Run();
     }
 }

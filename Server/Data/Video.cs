@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using NpgsqlTypes;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using NpgsqlTypes;
 
-namespace YT_dashboard.API;
+namespace YT.Data;
 
 public partial class Video
 {
