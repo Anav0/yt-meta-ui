@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using YT.Data;
 
@@ -19,6 +20,8 @@ namespace DesktopWinUI3
         {
             m_window = new MainWindow();
             m_window.Activate();
+
+            
         }
 
     }

@@ -23,91 +23,45 @@ using YT.Data;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace DesktopWinUI3
 {
-    public class GroupInfoCollection<T> : ObservableCollection<T>
-    {
-        public string Key { get; set; }
-    }
-
     public sealed partial class MainWindow : Window
     {
+
+        public string AppTitleText
+        {
+            get
+            {
+#if DEBUG
+                return "YT dashboard debug";
+#else
+                return "YT dashboard";
+#endif
+            }
+        }
+
         public MainWindow()
         {
             this.InitializeComponent();
+            Type pageType = Type.GetType("DesktopWinUI3.ListOfVideos");
+            contentFrame.Navigate(pageType);
 
-            VideosDataGrid.DataContext = new PostgresContext().Videos;
+
+            MainWindowXaml.ExtendsContentIntoTitleBar = true;  // enable custom titlebar
+            MainWindowXaml.SetTitleBar(AppTitleBar);      // set user ui element as titlebar
         }
 
-        private void VideosDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+        private void NavigationBar_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            var direction = e.Column.SortDirection;
-            var column = (string)e.Column.Tag;
+            var selectedItem = (NavigationViewItem)args.SelectedItem;
+            string selectedItemTag = ((string)selectedItem.Tag);
+            string pageName = "DesktopWinUI3." + selectedItemTag;
 
-            // Remove sorting indicators from other columns
-            foreach (var c in VideosDataGrid.Columns)
-            {
-                if (c.Tag.ToString() != column)
-                    c.SortDirection = null;
-            }
-
-            using (var conn = new PostgresContext())
-            {
-                var query = conn.Videos.AsQueryable();
-
-                if (direction == null || direction == DataGridSortDirection.Descending)
-                {
-                    query = query.OrderByDescending(o => EF.Property<object>(o, column));
-                    e.Column.SortDirection = DataGridSortDirection.Ascending;
-                }
-                else
-                {
-                    query = query.OrderBy(o => EF.Property<object>(o, column));
-                    e.Column.SortDirection = DataGridSortDirection.Descending;
-                }
-
-                VideosDataGrid.ItemsSource = new ObservableCollection<Video>(query);
-            }
-
+            Type pageType = Type.GetType(pageName);
+            contentFrame.Navigate(pageType, null, args.RecommendedNavigationTransitionInfo);
         }
-
-        //private void OnGroupBtnClick(object sender, RoutedEventArgs e)
-        //{
-        //    ObservableCollection<GroupInfoCollection<Video>> groups = new();
-
-        //    Dictionary<string, List<Video>> dict = new();
-        //    VideosDataGrid.DataContext = null;
-
-        //    foreach (var video in postgresContext.Videos)
-        //    {
-        //        if (dict.TryGetValue(video.Channel, out var group))
-        //            group.Add(video);
-        //        else
-        //            dict.Add(video.Channel, new List<Video>() { video });
-
-        //    }
-
-        //    foreach (var g in dict)
-        //    {
-        //        GroupInfoCollection<Video> info = new();
-        //        info.Key = g.Key;
-        //        foreach (var item in g.Value)
-        //            info.Add(item);
-
-        //        groups.Add(info);
-        //    }
-
-        //    grouped = new CollectionViewSource();
-        //    grouped.IsSourceGrouped = true;
-        //    grouped.Source = groups;
-
-        //    VideosDataGrid.DataContext = grouped.View;
-        //}
-
-        //private void VideosDataGrid_LoadingRowGroup(object sender, DataGridRowGroupHeaderEventArgs e)
-        //{
-
-        //}
     }
 }
