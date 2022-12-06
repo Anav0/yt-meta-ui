@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using YT.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 namespace YT.HTTP;
 
 public static class VideoEndpoints

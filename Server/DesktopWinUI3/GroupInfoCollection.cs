@@ -6,10 +6,9 @@ using System.Collections.ObjectModel;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace DesktopWinUI3
+namespace DesktopWinUI3;
+
+public class GroupInfoCollection<T> : ObservableCollection<T>
 {
-    public class GroupInfoCollection<T> : ObservableCollection<T>
-    {
-        public string Key { get; set; }
-    }
+    public string Key { get; set; }
 }

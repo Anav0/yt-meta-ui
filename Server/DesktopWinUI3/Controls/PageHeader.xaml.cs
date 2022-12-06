@@ -3,111 +3,98 @@
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace DesktopWinUI3.Controls
+namespace DesktopWinUI3.Controls;
+
+public sealed partial class PageHeader : UserControl
 {
-    public sealed partial class PageHeader : UserControl
+    public object Title
     {
-        public object Title
-        {
-            get { return GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
+        get { return GetValue(TitleProperty); }
+        set { SetValue(TitleProperty, value); }
+    }
 
-        public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(object), typeof(PageHeader), new PropertyMetadata(null));
+    public static readonly DependencyProperty TitleProperty =
+        DependencyProperty.Register("Title", typeof(object), typeof(PageHeader), new PropertyMetadata(null));
 
 
-        public string ApiNamespace
-        {
-            get { return (string)GetValue(ApiNamespaceProperty); }
-            set { SetValue(ApiNamespaceProperty, value); }
-        }
+    public string ApiNamespace
+    {
+        get { return (string)GetValue(ApiNamespaceProperty); }
+        set { SetValue(ApiNamespaceProperty, value); }
+    }
 
-        public static readonly DependencyProperty ApiNamespaceProperty =
-            DependencyProperty.Register("ApiNamespace", typeof(string), typeof(PageHeader), new PropertyMetadata(null));
+    public static readonly DependencyProperty ApiNamespaceProperty =
+        DependencyProperty.Register("ApiNamespace", typeof(string), typeof(PageHeader), new PropertyMetadata(null));
 
-        public object Subtitle
-        {
-            get { return GetValue(SubtitleProperty); }
-            set { SetValue(SubtitleProperty, value); }
-        }
+    public object Subtitle
+    {
+        get { return GetValue(SubtitleProperty); }
+        set { SetValue(SubtitleProperty, value); }
+    }
 
-        public static readonly DependencyProperty SubtitleProperty =
-            DependencyProperty.Register("Subtitle", typeof(object), typeof(PageHeader), new PropertyMetadata(null));
+    public static readonly DependencyProperty SubtitleProperty =
+        DependencyProperty.Register("Subtitle", typeof(object), typeof(PageHeader), new PropertyMetadata(null));
 
 
 
-        public Thickness HeaderPadding
-        {
-            get { return (Thickness)GetValue(HeaderPaddingProperty); }
-            set { SetValue(HeaderPaddingProperty, value); }
-        }
+    public Thickness HeaderPadding
+    {
+        get { return (Thickness)GetValue(HeaderPaddingProperty); }
+        set { SetValue(HeaderPaddingProperty, value); }
+    }
 
-        // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty HeaderPaddingProperty =
-            DependencyProperty.Register("HeaderPadding", typeof(Thickness), typeof(PageHeader), new PropertyMetadata((Thickness)App.Current.Resources["PageHeaderDefaultPadding"]));
-
-
-        public double BackgroundColorOpacity
-        {
-            get { return (double)GetValue(BackgroundColorOpacityProperty); }
-            set { SetValue(BackgroundColorOpacityProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BackgroundColorOpacityProperty =
-            DependencyProperty.Register("BackgroundColorOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.0));
+    // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty HeaderPaddingProperty =
+        DependencyProperty.Register("HeaderPadding", typeof(Thickness), typeof(PageHeader), new PropertyMetadata((Thickness)App.Current.Resources["PageHeaderDefaultPadding"]));
 
 
-        public double AcrylicOpacity
-        {
-            get { return (double)GetValue(AcrylicOpacityProperty); }
-            set { SetValue(AcrylicOpacityProperty, value); }
-        }
+    public double BackgroundColorOpacity
+    {
+        get { return (double)GetValue(BackgroundColorOpacityProperty); }
+        set { SetValue(BackgroundColorOpacityProperty, value); }
+    }
 
-        // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty AcrylicOpacityProperty =
-            DependencyProperty.Register("AcrylicOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.3));
+    // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty BackgroundColorOpacityProperty =
+        DependencyProperty.Register("BackgroundColorOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.0));
 
-        public double ShadowOpacity
-        {
-            get { return (double)GetValue(ShadowOpacityProperty); }
-            set { SetValue(ShadowOpacityProperty, value); }
-        }
 
-        // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ShadowOpacityProperty =
-            DependencyProperty.Register("ShadowOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.0));
+    public double AcrylicOpacity
+    {
+        get { return (double)GetValue(AcrylicOpacityProperty); }
+        set { SetValue(AcrylicOpacityProperty, value); }
+    }
 
-        public CommandBar TopCommandBar
-        {
-            get { return topCommandBar; }
-        }
+    // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty AcrylicOpacityProperty =
+        DependencyProperty.Register("AcrylicOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.3));
 
-        public UIElement TitlePanel
-        {
-            get { return pageTitle; }
-        }
+    public double ShadowOpacity
+    {
+        get { return (double)GetValue(ShadowOpacityProperty); }
+        set { SetValue(ShadowOpacityProperty, value); }
+    }
 
-        public PageHeader()
-        {
-            this.InitializeComponent();
-        }
+    // Using a DependencyProperty as the backing store for BackgroundColorOpacity.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty ShadowOpacityProperty =
+        DependencyProperty.Register("ShadowOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.0));
+
+    public CommandBar TopCommandBar
+    {
+        get { return topCommandBar; }
+    }
+
+    public UIElement TitlePanel
+    {
+        get { return pageTitle; }
+    }
+
+    public PageHeader()
+    {
+        InitializeComponent();
     }
 }
