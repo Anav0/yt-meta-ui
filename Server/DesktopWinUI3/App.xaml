@@ -6,7 +6,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DesktopWinUI3"
-    
+    xmlns:convs="using:DesktopWinUI3.Converters"
     >
         <Application.Resources>
         <ResourceDictionary>
@@ -44,6 +44,10 @@
                     <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+
+            <!-- Converters -->
+            <convs:DurationConverter x:Key="durationConverter"/>
+            <convs:PriceConverter x:Key="priceConverter"/>
 
             <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
 

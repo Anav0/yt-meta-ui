@@ -15,6 +15,8 @@ public partial class PostgresContext : DbContext
     {
     }
 
+    public virtual DbSet<Book> Books { get; set; }
+
     public virtual DbSet<Video> Videos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -25,6 +27,27 @@ public partial class PostgresContext : DbContext
         modelBuilder
             .HasPostgresExtension("pg_catalog", "adminpack")
             .HasPostgresExtension("pgagent", "pgagent");
+
+        modelBuilder.Entity<Book>(entity =>
+        {
+            entity.HasKey(e => e.Title).HasName("books_pkey");
+
+            entity.ToTable("books");
+
+            entity.Property(e => e.Title).HasColumnName("title");
+            entity.Property(e => e.Added).HasColumnName("added");
+            entity.Property(e => e.Author).HasColumnName("author");
+            entity.Property(e => e.Bought)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("bought");
+            entity.Property(e => e.Finished)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("finished");
+            entity.Property(e => e.Price)
+                .HasColumnType("money")
+                .HasColumnName("price");
+            entity.Property(e => e.Text).HasColumnName("text");
+        });
 
         modelBuilder.Entity<Video>(entity =>
         {
@@ -43,8 +66,7 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.CommentCount).HasColumnName("comment_count");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.DisplayId).HasColumnName("display_id");
-            entity.Property(e => e.Document)
-            .HasColumnName("document");
+            entity.Property(e => e.Document).HasColumnName("document");
             entity.Property(e => e.Duration).HasColumnName("duration");
             entity.Property(e => e.DurationString).HasColumnName("duration_string");
             entity.Property(e => e.Epoch).HasColumnName("epoch");

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using CommunityToolkit.WinUI.UI.Controls;
+using YT.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -14,11 +15,6 @@ using YT.Data;
 
 namespace DesktopWinUI3
 {
-    public class GroupInfoCollection<T> : ObservableCollection<T>
-    {
-        public string Key { get; set; }
-    }
-
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>

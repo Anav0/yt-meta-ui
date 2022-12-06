@@ -5,12 +5,24 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>DesktopWinUI3 (Package)</ActiveDebugProfile>
+    <Source>D:\Pobrane\Frame 30.png</Source>
+    <SmallTileSource>D:\Pobrane\Frame 30.png</SmallTileSource>
+    <MediumTileSource>D:\Pobrane\Frame 30.png</MediumTileSource>
+    <WideTileSource>D:\Pobrane\Frame 30.png</WideTileSource>
+    <LargeTileSource>D:\Pobrane\Frame 30.png</LargeTileSource>
+    <AppIconSource>D:\Pobrane\Frame 30.png</AppIconSource>
+    <SplashScreenSource>D:\Pobrane\Frame 30.png</SplashScreenSource>
+    <PackageLogoSource>D:\Pobrane\Frame 30.png</PackageLogoSource>
+    <BadgeLogoSource>D:\Pobrane\Frame 30.png</BadgeLogoSource>
   </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
     <Page Update="Controls\PageHeader.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\BooksList.xaml">
       <SubType>Designer</SubType>
     </Page>
     <None Update="MainWindow.xaml">

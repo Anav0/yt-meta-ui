@@ -2,7 +2,7 @@
 <!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
 
 <Page
-    x:Class="DesktopWinUI3.ListOfVideos"
+    x:Class="DesktopWinUI3.BooksList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DesktopWinUI3"
@@ -41,27 +41,18 @@
             IsReadOnly="True"
             GridLinesVisibility="All"
             CanUserSortColumns="True"
-            x:Name="VideosDataGrid"
+            x:Name="BooksListGrid"
             ItemsSource="{Binding}"
-            Sorting="VideosDataGrid_Sorting"
+            Sorting="BooksListGrid_Sorting"
             Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="6" Grid.Row="1">
             <toolkit:DataGrid.Columns>
-                <toolkit:DataGridTextColumn Header="Kanał" Tag="Channel" Binding="{Binding Channel}"/>
-                <toolkit:DataGridTextColumn Width="*" Header="Tytuł" Tag="Title" Binding="{Binding Title}"/>
-                <toolkit:DataGridTextColumn Header="Data wrzucenia" Tag="UploadDate" Binding="{Binding UploadDate}"/>
-                <toolkit:DataGridTextColumn Width="100" Header="Wyświetlenia" Tag="ViewCount" Binding="{Binding ViewCount}"/>
-                <toolkit:DataGridTextColumn Width="100" Header="Polubienia" Tag="LikeCount" Binding="{Binding LikeCount}"/>
-                <toolkit:DataGridTextColumn Width="100" Header="Komentarze" Tag="CommentCount" Binding="{Binding CommentCount}"/>
-                <toolkit:DataGridTextColumn Width="100" Header="Długość" Tag="Duration" Binding="{Binding Duration, Converter={StaticResource durationConverter}}"/>
-                <toolkit:DataGridTemplateColumn Width="120" Header="Link" Tag="WebpageUrl" >
-                    <toolkit:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <HyperlinkButton Margin="1" Content="Oglądaj" NavigateUri="{Binding WebpageUrl}"/>
-                        </DataTemplate>
-                    </toolkit:DataGridTemplateColumn.CellTemplate>
-                </toolkit:DataGridTemplateColumn>
+                <toolkit:DataGridTextColumn Header="Autor" Tag="Author" Binding="{Binding Author}"/>
+                <toolkit:DataGridTextColumn Header="Tytuł" Tag="Title" Binding="{Binding Title}"/>
+                <toolkit:DataGridTextColumn Header="Cena" Tag="Price" Binding="{Binding Price, Converter={StaticResource priceConverter}}"/>
+                <toolkit:DataGridTextColumn Header="Kupiono" Tag="Bought" Binding="{Binding Bought}"/>
+                <toolkit:DataGridTextColumn Header="Przeczytano" Tag="Finished" Binding="{Binding Finished}"/>
+                <toolkit:DataGridTextColumn Header="Dodano" Tag="Added" Binding="{Binding Added}"/>
             </toolkit:DataGrid.Columns>
         </toolkit:DataGrid>
-
     </Grid>
 </Page>

@@ -47,7 +47,8 @@
 
             <NavigationView IsSettingsVisible="False" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="NavigationBar" SelectionChanged="NavigationBar_SelectionChanged">
                 <NavigationView.MenuItems>
-                    <NavigationViewItem Icon="Video" Content="List of videos" Tag="ListOfVideos" />
+                    <NavigationViewItem Icon="Video" Content="YT" Tag="ListOfVideos" />
+                    <NavigationViewItem Icon="Bookmarks" Content="Książki" Tag="BooksList" />
                 </NavigationView.MenuItems>
 
                 <Frame x:Name="contentFrame"/>
