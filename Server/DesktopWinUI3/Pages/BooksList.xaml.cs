@@ -1,9 +1,11 @@
-using CommunityToolkit.WinUI.UI.Controls;
+﻿using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using WinRT;
 using YT.Data;
 
 namespace DesktopWinUI3;
@@ -15,9 +17,14 @@ public sealed partial class BooksList : Page
     public BooksList()
     {
         InitializeComponent();
-        BooksListGrid.DataContext = new PostgresContext().Books;
 
+        using (var conn = new PostgresContext())
+        {
+            var query = conn.Books.AsQueryable();
+            UpdateView(query);
+        }
     }
+
     private void BooksListGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
         _sortColumn = e.Column;
@@ -50,8 +57,17 @@ public sealed partial class BooksList : Page
                 SortByColumn(column, direction, _sortColumn, ref query);
             }
 
-            BooksListGrid.ItemsSource = new ObservableCollection<Book>(query);
+            UpdateView(query);
         }
+    }
+
+    private void UpdateView(IQueryable<Book> query)
+    {
+        BooksListGrid.ItemsSource = new ObservableCollection<Book>(query);
+        var books = BooksListGrid.ItemsSource.OfType<Book>();
+        TotalTextBlock.Text = $"Książek: {books.Count()}";
+        TotalPrice.Text = $"Suma: {books.Sum(x => x.Price)}zł";
+        Read.Text = $"Przeczytano: {books.Sum(x => x.Bought == null ? 0 : 1)}";
     }
 
     private void SortByColumn(string column, DataGridSortDirection? direction, DataGridColumn columnObj, ref IQueryable<Book> query)
@@ -82,4 +98,6 @@ public sealed partial class BooksList : Page
             query = query.Where(p => p.Text.Matches(phrase));
 
     }
+
+
 }
