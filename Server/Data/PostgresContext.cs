@@ -18,7 +18,7 @@ public partial class PostgresContext : DbContext
     public virtual DbSet<Video> Videos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5433;Database=postgres;User Id=postgres;Password=.;");
+        => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=postgres;User Id=postgres;Password=.;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
