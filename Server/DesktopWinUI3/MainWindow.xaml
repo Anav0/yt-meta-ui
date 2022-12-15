@@ -45,7 +45,7 @@
 
             <TextBlock x:Name="CurrentPageTextBlock" AutomationProperties.AutomationId="__CurrentPage"  FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"/>
 
-            <NavigationView IsSettingsVisible="False" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="NavigationBar" SelectionChanged="NavigationBar_SelectionChanged">
+            <NavigationView IsSettingsVisible="True" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="NavigationBar" SelectionChanged="NavigationBar_SelectionChanged">
                 <NavigationView.MenuItems>
                     <NavigationViewItem Icon="Video" Content="YT" Tag="ListOfVideos" />
                     <NavigationViewItem Icon="Bookmarks" Content="Książki" Tag="BooksList" />

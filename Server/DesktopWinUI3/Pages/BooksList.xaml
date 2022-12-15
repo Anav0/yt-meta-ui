@@ -10,66 +10,46 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource HomePageBackgroundBrush}"
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-    >
-    <Grid Margin="20" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls">
 
-        <TextBox PlaceholderText="Search..." VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" KeyDown="TextBox_KeyDown" x:Name="SearchInput" />
+    <StackPanel Orientation="Vertical" Margin="90">
+        <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+            <TextBlock Margin="0 0 10 0" Grid.Column="0" HorizontalAlignment="Left" x:Name="TotalTextBlock"/>
+            <TextBlock Margin="0 0 10 0" Grid.Column="1" HorizontalAlignment="Left" x:Name="TotalPrice"/>
+            <TextBlock Margin="0 0 10 0" Grid.Column="2" HorizontalAlignment="Left" x:Name="Read"/>
+        </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="6" Grid.Row="1">
-
-            <Grid Margin="0 0 0 20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="125"/>
-                    <ColumnDefinition Width="125"/>
-                    <ColumnDefinition Width="125"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" HorizontalAlignment="Left" x:Name="TotalTextBlock"/>
-                <TextBlock Grid.Column="1" HorizontalAlignment="Left" x:Name="TotalPrice"/>
-                <TextBlock Grid.Column="2" HorizontalAlignment="Left" x:Name="Read"/>
-            </Grid>
-
-
-            <toolkit:DataGrid
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" PlaceholderText="Search..." 
+                     VerticalAlignment="Center" 
+                 KeyDown="TextBox_KeyDown" 
+                 x:Name="SearchInput" />
+            <CommandBar Grid.Column="1" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
+                <AppBarButton Click="AddNewBook" Icon="Add" Label="Dodaj"/>
+                <AppBarToggleButton Name="GroupButton" Click="Group" Icon="Switch" Label="Grupuj"/>
+            </CommandBar>
+        </Grid>
+        <toolkit:DataGrid
             AutoGenerateColumns="False"
             IsReadOnly="False"
             GridLinesVisibility="All"
-            CanUserSortColumns="True"
             x:Name="BooksListGrid"
             ItemsSource="{Binding}"
             Sorting="BooksListGrid_Sorting"
+            LoadingRowGroup="BooksListGrid_LoadingRowGroup"
             >
-                <toolkit:DataGrid.Columns>
-                    <toolkit:DataGridTextColumn Header="Autor" Tag="Author" Binding="{Binding Author}"/>
-                    <toolkit:DataGridTextColumn Header="Tytuł" Tag="Title" Binding="{Binding Title}"/>
-                    <toolkit:DataGridTextColumn Header="Cena" Tag="Price" Binding="{Binding Price, Converter={StaticResource priceConverter}}"/>
-                    <toolkit:DataGridTextColumn Header="Kupiono" Tag="Bought" Binding="{Binding Bought}"/>
-                    <toolkit:DataGridTextColumn Header="Przeczytano" Tag="Finished" Binding="{Binding Finished}"/>
-                    <toolkit:DataGridTextColumn Header="Dodano" Tag="Added" Binding="{Binding Added}"/>
-                </toolkit:DataGrid.Columns>
-            </toolkit:DataGrid>
-        </StackPanel>
-
-    </Grid>
+            <toolkit:DataGrid.Columns>
+                <toolkit:DataGridTextColumn Header="Autor" Tag="Author" Binding="{Binding Author}"/>
+                <toolkit:DataGridTextColumn Header="Tytuł" Tag="Title" Binding="{Binding Title}"/>
+                <toolkit:DataGridTextColumn Header="Cena" Tag="Price" Binding="{Binding Price, Converter={StaticResource priceConverter}}"/>
+                <toolkit:DataGridTextColumn Header="Kupiono" Tag="Bought" Binding="{Binding Bought}"/>
+                <toolkit:DataGridTextColumn Header="Przeczytano" Tag="Finished" Binding="{Binding Finished}"/>
+                <toolkit:DataGridTextColumn Header="Dodano" Tag="Added" Binding="{Binding Added}"/>
+            </toolkit:DataGrid.Columns>
+        </toolkit:DataGrid>
+    </StackPanel>
 </Page>

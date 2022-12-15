@@ -22,10 +22,10 @@ public sealed partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        var pageType = Type.GetType("DesktopWinUI3.ListOfVideos");
+        var pageType = Type.GetType("DesktopWinUI3.BooksList");
         contentFrame.Navigate(pageType);
 
-
+        NavigationBar.IsPaneOpen = false;
         MainWindowXaml.ExtendsContentIntoTitleBar = true;  // enable custom titlebar
         MainWindowXaml.SetTitleBar(AppTitleBar);      // set user ui element as titlebar
     }
