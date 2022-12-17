@@ -1,22 +1,29 @@
 ﻿using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
+using Npgsql;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WinRT;
-using YT.Data;
+using Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DesktopWinUI3;
 
 public sealed partial class BooksList : Page
 {
-    private DataGridColumn? _sortColumn;
+    public string GroupColumnName { get; set; }
 
-    ObservableCollection<GroupInfoCollection<Book>> GroupedByAuthor;
+    DataGridColumn? _sortColumn;
+    ObservableCollection<GroupInfoCollection<Book>> GroupedBy;
+    List<Book> ChangedBooks = new();
 
     public BooksList()
     {
@@ -40,34 +47,34 @@ public sealed partial class BooksList : Page
                 SortByColumn(column, direction, _sortColumn, ref query);
             }
 
-            BooksListGrid.ItemsSource = new ObservableCollection<Book>(query);
+            BooksListGrid.ItemsSource = new ObservableCollection<Book>(query); ;
 
             UpdateInfoBar();
         }
     }
 
-    private void GroupByAuthor()
+    private void GroupBy(string columnName)
     {
         using (var conn = new PostgresContext())
         {
-            GroupedByAuthor = new ObservableCollection<GroupInfoCollection<Book>>();
+            GroupedBy = new ObservableCollection<GroupInfoCollection<Book>>();
 
-            var groups = conn.Books.GroupBy(o => o.Author, (k, os) => os.ToList());
+            var groups = conn.Books.GroupBy(o => EF.Property<string>(o, columnName), (k, os) => os.ToList());
 
             foreach (var group in groups)
             {
                 GroupInfoCollection<Book> info = new GroupInfoCollection<Book>();
-                info.Key = group[0].Author;
+                info.Key = group[0].GetType().GetProperty(columnName).GetValue(group[0], null).As<string>();
                 foreach (var book in group)
                 {
                     info.Add(book);
                 }
-                GroupedByAuthor.Add(info);
+                GroupedBy.Add(info);
             }
 
             CollectionViewSource groupedItems = new CollectionViewSource();
             groupedItems.IsSourceGrouped = true;
-            groupedItems.Source = GroupedByAuthor;
+            groupedItems.Source = GroupedBy;
             BooksListGrid.ItemsSource = groupedItems.View;
             UpdateInfoBar();
         }
@@ -126,7 +133,7 @@ public sealed partial class BooksList : Page
     {
         ICollectionViewGroup group = e.RowGroupHeader.CollectionViewGroup;
         var book = group.GroupItems[0] as Book;
-        e.RowGroupHeader.PropertyValue = book.Author;
+        e.RowGroupHeader.PropertyValue = book.GetType().GetProperty(GroupColumnName).GetValue(book, null).As<string>();
     }
 
     private void AddNewBook(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -134,11 +141,64 @@ public sealed partial class BooksList : Page
 
     }
 
-    private void Group(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void GroupByItemClicked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        if (GroupButton.IsChecked.Value)
-            GroupByAuthor();
-        else
+        var columnName = sender.As<MenuFlyoutItem>().Tag.As<string>();
+
+        GroupColumnName = columnName;
+        GroupMenu.Content = columnName;
+
+        if (string.IsNullOrEmpty(columnName.Trim()))
             DisplayBooks();
+        else
+            GroupBy(columnName);
+    }
+
+    private void SaveChanges(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        using (var db = new PostgresContext())
+        {
+            try
+            {
+                SaveBtn.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                ProgressCircle.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+                SaveBtn.IsEnabled = false;
+
+                db.UpdateRange(ChangedBooks);
+                db.SaveChanges();
+
+                ChangedBooks.Clear();
+                ChangeInfo.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                MyInfoBar.Message = ex.Message;
+                MyInfoBar.Title = "Zapis do bazy";
+                MyInfoBar.IsOpen = true;
+                SaveBtn.IsEnabled = true;
+            }
+            finally
+            {
+                ProgressCircle.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+                SaveBtn.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            }
+
+        }
+    }
+
+    private void BooksListGrid_RowEditEnded(object sender, DataGridRowEditEndedEventArgs e)
+    {
+        if (e.EditAction == DataGridEditAction.Cancel) return;
+
+        var bookEdited = e.Row.DataContext.As<Book>();
+
+        if (!ChangedBooks.Contains(bookEdited))
+        {
+            ChangedBooks.Add(bookEdited);
+        }
+
+        SaveBtn.IsEnabled = true;
+        ChangeInfo.Text = $"{ChangedBooks.Count} zmian";
+        ChangeInfo.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
     }
 }

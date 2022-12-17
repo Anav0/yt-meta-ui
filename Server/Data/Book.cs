@@ -1,6 +1,8 @@
-﻿using NpgsqlTypes;
+﻿using System;
+using System.Collections.Generic;
+using NpgsqlTypes;
 
-namespace YT.Data;
+namespace Data;
 
 public partial class Book
 {
@@ -17,4 +19,6 @@ public partial class Book
     public DateTime? Added { get; set; }
 
     public NpgsqlTsVector? Text { get; set; }
+
+    public int Id { get; set; }
 }

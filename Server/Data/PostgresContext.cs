@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
-namespace YT.Data;
+namespace Data;
 
 public partial class PostgresContext : DbContext
 {
@@ -28,11 +30,13 @@ public partial class PostgresContext : DbContext
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Title).HasName("books_pkey");
+            entity.HasKey(e => e.Id).HasName("pkey");
 
             entity.ToTable("books");
 
-            entity.Property(e => e.Title).HasColumnName("title");
+            entity.Property(e => e.Id)
+                .UseIdentityAlwaysColumn()
+                .HasColumnName("id");
             entity.Property(e => e.Added).HasColumnName("added");
             entity.Property(e => e.Author).HasColumnName("author");
             entity.Property(e => e.Bought)
@@ -45,6 +49,7 @@ public partial class PostgresContext : DbContext
                 .HasColumnType("money")
                 .HasColumnName("price");
             entity.Property(e => e.Text).HasColumnName("text");
+            entity.Property(e => e.Title).HasColumnName("title");
         });
 
         modelBuilder.Entity<Video>(entity =>

@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
-using YT.Data;
+using Data;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -91,42 +91,4 @@ public sealed partial class ListOfVideos : Page
             query = query.Where(p => p.Document.Matches(phrase));
 
     }
-
-    //private void OnGroupBtnClick(object sender, RoutedEventArgs e)
-    //{
-    //    ObservableCollection<GroupInfoCollection<Video>> groups = new();
-
-    //    Dictionary<string, List<Video>> dict = new();
-    //    VideosDataGrid.DataContext = null;
-
-    //    foreach (var video in postgresContext.Videos)
-    //    {
-    //        if (dict.TryGetValue(video.Channel, out var group))
-    //            group.Add(video);
-    //        else
-    //            dict.Add(video.Channel, new List<Video>() { video });
-
-    //    }
-
-    //    foreach (var g in dict)
-    //    {
-    //        GroupInfoCollection<Video> info = new();
-    //        info.Key = g.Key;
-    //        foreach (var item in g.Value)
-    //            info.Add(item);
-
-    //        groups.Add(info);
-    //    }
-
-    //    grouped = new CollectionViewSource();
-    //    grouped.IsSourceGrouped = true;
-    //    grouped.Source = groups;
-
-    //    VideosDataGrid.DataContext = grouped.View;
-    //}
-
-    //private void VideosDataGrid_LoadingRowGroup(object sender, DataGridRowGroupHeaderEventArgs e)
-    //{
-
-    //}
 }

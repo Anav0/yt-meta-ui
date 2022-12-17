@@ -13,25 +13,41 @@
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls">
 
     <StackPanel Orientation="Vertical" Margin="90">
+        <InfoBar x:Name="MyInfoBar" IsOpen="false">
+        </InfoBar>
         <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-            <TextBlock Margin="0 0 10 0" Grid.Column="0" HorizontalAlignment="Left" x:Name="TotalTextBlock"/>
-            <TextBlock Margin="0 0 10 0" Grid.Column="1" HorizontalAlignment="Left" x:Name="TotalPrice"/>
-            <TextBlock Margin="0 0 10 0" Grid.Column="2" HorizontalAlignment="Left" x:Name="Read"/>
+            <TextBlock Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="TotalTextBlock"/>
+            <TextBlock Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="TotalPrice"/>
+            <TextBlock Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="Read"/>
+            <TextBlock Foreground="Orange" Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="ChangeInfo"/>
         </StackPanel>
 
-        <Grid>
+        <Grid Margin="0 10 0 10" ColumnSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" PlaceholderText="Search..." 
-                     VerticalAlignment="Center" 
-                 KeyDown="TextBox_KeyDown" 
-                 x:Name="SearchInput" />
-            <CommandBar Grid.Column="1" Background="Transparent" IsOpen="False" DefaultLabelPosition="Right">
-                <AppBarButton Click="AddNewBook" Icon="Add" Label="Dodaj"/>
-                <AppBarToggleButton Name="GroupButton" Click="Group" Icon="Switch" Label="Grupuj"/>
-            </CommandBar>
+            <TextBox 
+                Grid.Column="0" PlaceholderText="Search..." 
+                VerticalAlignment="Center" 
+                KeyDown="TextBox_KeyDown" 
+                x:Name="SearchInput" />
+
+            <DropDownButton x:Name="GroupMenu" MinWidth="100" Grid.Column="1" Content="Nie grupuj">
+                <DropDownButton.Flyout>
+                    <MenuFlyout Placement="Bottom" >
+                        <MenuFlyoutItem Click="GroupByItemClicked" Text="Nie grupuj" Tag=" "/>
+                        <MenuFlyoutItem Click="GroupByItemClicked" Text="Autor" Tag="Author"/>
+                        <MenuFlyoutItem Click="GroupByItemClicked" Text="Tytuł" Tag="Title"/>
+                    </MenuFlyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+            <Button x:Name="SaveBtn" Click="SaveChanges" IsEnabled="False" Style="{StaticResource AccentButtonStyle}" Grid.Column="2">
+                Zapisz
+            </Button>
+            <ProgressRing Grid.Column="2" x:Name="ProgressCircle" Visibility="Collapsed" IsActive="True" />
         </Grid>
         <toolkit:DataGrid
             AutoGenerateColumns="False"
@@ -41,6 +57,7 @@
             ItemsSource="{Binding}"
             Sorting="BooksListGrid_Sorting"
             LoadingRowGroup="BooksListGrid_LoadingRowGroup"
+            RowEditEnded="BooksListGrid_RowEditEnded"
             >
             <toolkit:DataGrid.Columns>
                 <toolkit:DataGridTextColumn Header="Autor" Tag="Author" Binding="{Binding Author}"/>

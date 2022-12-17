@@ -1,6 +1,8 @@
-﻿using NpgsqlTypes;
+﻿using System;
+using System.Collections.Generic;
+using NpgsqlTypes;
 
-namespace YT.Data;
+namespace Data;
 
 public partial class Video
 {

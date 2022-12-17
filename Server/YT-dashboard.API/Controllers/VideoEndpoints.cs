@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YT.Data;
+using Data;
 namespace YT.HTTP;
 
 public static class VideoEndpoints
