@@ -49,6 +49,7 @@
             <!-- Converters -->
             <convs:DurationConverter x:Key="durationConverter"/>
             <convs:PriceConverter x:Key="priceConverter"/>
+            <convs:StringToDateTimeConverter x:Key="stringToDateTimeConverter"/>
 
             <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
 

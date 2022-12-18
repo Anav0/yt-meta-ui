@@ -59,13 +59,14 @@
             LoadingRowGroup="BooksListGrid_LoadingRowGroup"
             RowEditEnded="BooksListGrid_RowEditEnded"
             >
+
             <toolkit:DataGrid.Columns>
                 <toolkit:DataGridTextColumn Header="Autor" Tag="Author" Binding="{Binding Author}"/>
                 <toolkit:DataGridTextColumn Header="Tytuł" Tag="Title" Binding="{Binding Title}"/>
                 <toolkit:DataGridTextColumn Header="Cena" Tag="Price" Binding="{Binding Price, Converter={StaticResource priceConverter}}"/>
-                <toolkit:DataGridTextColumn Header="Kupiono" Tag="Bought" Binding="{Binding Bought}"/>
-                <toolkit:DataGridTextColumn Header="Przeczytano" Tag="Finished" Binding="{Binding Finished}"/>
-                <toolkit:DataGridTextColumn Header="Dodano" Tag="Added" Binding="{Binding Added}"/>
+                <toolkit:DataGridTextColumn Header="Kupiono" Tag="Bought" Binding="{Binding Bought, Converter={StaticResource stringToDateTimeConverter}}"/>
+                <toolkit:DataGridTextColumn Header="Przeczytano" Tag="Finished" Binding="{Binding Finished, Converter={StaticResource stringToDateTimeConverter}}"/>
+                <toolkit:DataGridTextColumn Header="Dodano" Tag="Added" Binding="{Binding Added, Converter={StaticResource stringToDateTimeConverter}}"/>
             </toolkit:DataGrid.Columns>
         </toolkit:DataGrid>
     </StackPanel>
