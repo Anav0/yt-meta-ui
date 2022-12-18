@@ -12,17 +12,27 @@
     Background="{ThemeResource HomePageBackgroundBrush}"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls">
 
-    <StackPanel Orientation="Vertical" Margin="90">
-        <InfoBar x:Name="MyInfoBar" IsOpen="false">
-        </InfoBar>
-        <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+    <Grid  Margin="90">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <InfoBar Grid.Row="0" x:Name="MyInfoBar" IsOpen="false"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 20 0 0">
             <TextBlock Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="TotalTextBlock"/>
             <TextBlock Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="TotalPrice"/>
             <TextBlock Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="Read"/>
             <TextBlock Foreground="Orange" Margin="0 0 10 0" HorizontalAlignment="Left" x:Name="ChangeInfo"/>
         </StackPanel>
 
-        <Grid Margin="0 10 0 10" ColumnSpacing="10">
+        <Grid Grid.Row="2" Margin="0 10 0 10" ColumnSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -49,7 +59,9 @@
             </Button>
             <ProgressRing Grid.Column="2" x:Name="ProgressCircle" Visibility="Collapsed" IsActive="True" />
         </Grid>
+        
         <toolkit:DataGrid
+            Grid.Row="3"
             AutoGenerateColumns="False"
             IsReadOnly="False"
             GridLinesVisibility="All"
@@ -69,5 +81,5 @@
                 <toolkit:DataGridTextColumn Header="Dodano" Tag="Added" Binding="{Binding Added, Converter={StaticResource stringToDateTimeConverter}}"/>
             </toolkit:DataGrid.Columns>
         </toolkit:DataGrid>
-    </StackPanel>
+    </Grid>
 </Page>
